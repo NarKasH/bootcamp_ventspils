@@ -44,5 +44,5 @@ public interface BookListRepository extends CrudRepository<BookList, Long> {
     @Transactional
 	@Modifying
 	@Query(nativeQuery = true, value="update book_list bl set bl.return_date = :return_date where bl.isbn = :isbn and bl.username = :username")
-	void setReturnDateFor(@Param("return_date") long return_date, @Param("isbn") String isbn, @Param("username") String username);
+	void setReturnDateFor(@Param("return_date") int return_date, @Param("isbn") String isbn, @Param("username") String username);
 }
