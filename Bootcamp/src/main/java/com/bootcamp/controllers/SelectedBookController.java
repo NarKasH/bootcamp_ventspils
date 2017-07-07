@@ -44,6 +44,7 @@ public class SelectedBookController {
 		modelAndView.addObject("condition", book.getCondition());
 		modelAndView.addObject("rating", book.getRating());
 		modelAndView.addObject("pic_url", book.getPic_url());
+		modelAndView.addObject("isbn", book.getIsbn());
 		modelAndView.setViewName("selectedBook"); //demo or JAVA
 		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -86,7 +87,7 @@ public class SelectedBookController {
 		}
 		
 		bookList.setBookStatus("ordered");
-		bookList.setIsbn("23123123");
+		bookList.setIsbn(book.getIsbn());
 		bookList.setTitle(title);
 		bookList.setUsername(username);
 		bookList.setAuthor(book.getAuthor());
