@@ -29,7 +29,7 @@ public class BookList {
 	private String author;
 	
 	@Column(name = "return_date")
-	private long return_date;
+	private int return_date;
 
 	public String getUsername() {
 		return username;
@@ -72,7 +72,7 @@ public class BookList {
 	}
 
 	public String getReturn_date() {
-		return new SimpleDateFormat("MM-dd-yyyy").format(return_date);
+		return new SimpleDateFormat("MM-dd-yyyy").format(return_date+System.currentTimeMillis());
 	}
 
 	public void setReturn_date(int return_date) {

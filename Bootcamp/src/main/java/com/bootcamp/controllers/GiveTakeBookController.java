@@ -38,11 +38,11 @@ public class GiveTakeBookController {
 	}
 	
 	@RequestMapping(value={"/givebook"}, method = RequestMethod.POST)
-	public ModelAndView takeBook(@RequestParam(value = "isbn") String isbn, @RequestParam(value = "date", defaultValue="none") String date){
+	public ModelAndView takeBook(@RequestParam(value = "isbn") String isbn, @RequestParam(value = "username") String username, @RequestParam(value = "date", defaultValue="none") String date){
 		ModelAndView mav = new ModelAndView("redirect:/givetakebook");
-		String[] isbnAndUsername = isbn.split(","); //split isbn and username where comma
-		isbn = isbnAndUsername[0]; //get isbn
-		String username = isbnAndUsername[1]; //get username
+		//String[] isbnAndUsername = isbn.split(","); //split isbn and username where comma
+		//isbn = isbnAndUsername[0]; //get isbn
+		//String username = isbnAndUsername[1]; //get username
 	    
 	    if(date.equals("none")){
 	    	mav.setViewName("redirect:/givetakebook?noTimeSet");
@@ -71,8 +71,8 @@ public class GiveTakeBookController {
 		}
 		
 		
-		bookListRepository.setBookstatusFor("owned", isbn, username); //change book status to "owned"
-		bookListRepository.setReturnDateFor(returnDate.getTime(), isbn, username); //set book return date
+		bookListRepository.setBookstatusFor("take", isbn, username); //change book status to "owned"
+		bookListRepository.setReturnDateFor((int)returnDate.getTime(), isbn, username); //set book return date
 	    System.out.println("Book has been given");
 
 	    
@@ -81,8 +81,12 @@ public class GiveTakeBookController {
 	
 	@RequestMapping(value="/takebook", method = RequestMethod.POST)
 	public ModelAndView giveBookByISBN(@RequestParam(value = "isbn") String isbn, @RequestParam(value = "username") String username){
+		//String[] isbnAndUsername = isbn.split(","); //split isbn and username where comma
+		//isbn = isbnAndUsername[0]; //get isbn
+		//String username = isbnAndUsername[1]; //get username
 	    System.out.println("Book has been taken");
-		bookListRepository.delete(bookListRepository.findByIsbnAndUsername(isbn, username)); //delete book from bookList
+	    bookListRepository.setBookstatusFor("ordered", isbn, username); 
+		//bookListRepository.delete(bookListRepository.findByIsbnAndUsername(isbn, username)); //delete book from bookList
 		
 	    ModelAndView mav = new ModelAndView("redirect:/givetakebook");
 	    mav.addObject("books", bookListRepository.findByBookStatusIgnoreCase("ordered"));
