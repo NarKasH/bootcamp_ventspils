@@ -27,6 +27,8 @@ public interface BookListRepository extends CrudRepository<BookList, Long> {
 	void setBookstatusFor(@Param("bookStatus") String bookStatus, @Param("isbn") String isbn, @Param("username") String username);
 	
 	List<BookList> findByBookStatusIgnoreCase(String bookStatus);
+	List<BookList> findByBookStatusAndUsernameIgnoreCase(String bookStatus, String username);
+	
 	BookList findByIsbnAndUsername(String isbn, String username);
 	
 	@Query(value="select bl from book_list bl where bl.username = :username")
