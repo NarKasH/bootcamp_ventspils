@@ -1,55 +1,75 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.bootcamp.controllers;
 
+import java.util.Calendar;
+import java.util.List;
+import java.util.TimeZone;
 
-import com.bootcamp.models.BookList;
-import com.bootcamp.repositories.BookListRepository;
-import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
-import javax.annotation.Resource;
-import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.bootcamp.models.BookList;
+import com.bootcamp.models.Books;
+import com.bootcamp.repositories.BookListRepository;
+import com.bootcamp.repositories.BooksRepository;
+import com.bootcamp.repositories.UserRepository;
 
 
-/**
- * Handles and retrieves person request
- * Управляет и возвращает запрос
- */
-@Controller
-@RequestMapping("/main")
+@Controller    
 public class MyBookListController {
+	
+	
+	@Autowired
+	private BookListRepository bookListRepository;
 
-    protected static Logger logger = Logger.getLogger("controller");
+	
+	
+	
+	@RequestMapping(value="/mybooks", method = RequestMethod.GET)
+		public ModelAndView debts(@RequestParam(value="username")String username){
+		
+			ModelAndView modelAndView = new ModelAndView();
+			
+			Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+			long time = cal.getTimeInMillis();
+			
+			List<BookList> bookList = bookListRepository.findByBookStatusAndUsernameIgnoreCase("owned",username);
+			
+			modelAndView.addObject("booklist", bookList);
+			modelAndView.setViewName("mybooks");
+			
+			
 
-    @Autowired
-    private BookListRepository bookListRepository;
-
-    /**
-     * Handles and retrieves users and show it in a JSP page
-     * @return the name of the JSP page
-     */
-    @RequestMapping(value = "/username", method = RequestMethod.GET)
-    public String getBook(Model model) {
-
-        logger.debug("Received request to show all books");
-
-        // Retrieve all users by delegating the call to repository
-        Iterable<BookList> Books = bookListRepository.findAll();
-
-        // Attach users to the Model
-        model.addAttribute("Books", Books);
-
-        return "mybooks.html";
-    }
+			return modelAndView;
+			
+	}
+	
+	@RequestMapping(value={"/givebackthisbook"}, method = RequestMethod.POST)
+	public ModelAndView takeBook(@RequestParam(value = "isbn") String isbn){
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+		System.out.println("giving book with isbn: " + isbn);
+		System.out.println("giving book for user: " + username);
+		
+		bookListRepository.setBookstatusFor("take", isbn, username); //change book status to "owned"
+	    
+	    System.out.println("Book has been given back");
+	    
+	    ModelAndView mav = new ModelAndView("redirect:/mybooks");
+	    mav.addObject("books", bookListRepository.findByBookStatusIgnoreCase("ordered"));
+	    mav.addObject("books1", bookListRepository.findByBookStatusIgnoreCase("take"));
+	    mav.setViewName("redirect:/mybooks?username=" + username);
+	    
+	    
+		return mav;	//TODO show message if there isn't book with given isbn number
+	}
 
 }

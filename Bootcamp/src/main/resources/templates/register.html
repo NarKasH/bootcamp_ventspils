@@ -66,10 +66,10 @@
                 <input type="text" placeholder="Surname" th:field="*{surname}"/><span style="font-color:red; color:red;" th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}">Name Error</span>
                 <input type="Password" placeholder="password" th:field="*{password}" /><span style="font-color:red; color:red;" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Name Error</span>
                 <input type="text" placeholder="Username" th:field="*{username}" /><span style="font-color:red; color:red;" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Name Error</span>
-                <div>Select Role : </div>
-                <select th:field="*{role}">
+                <div style="color:grey;">Select Role : </div>
+                <select style="color:grey;" th:field="*{role}">
   					<option value="reader">Reader</option>
-  					<option value="employee">Employee</option>
+  					<option th:if="${role == 'admin'}" value="employee">Employee</option>
 				</select>
                 <button>create</button>
                 <!-- <p id="alr"><br> Already registered? </br> <a th:href="@{login}" href="login.html">Sign In</a></p> --> 

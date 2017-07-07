@@ -948,14 +948,14 @@ a.s3d  {
             
     display: inline-block !important;
     font: 700 13px/36px 'Arial', Helvetica, Clean, sans-serif;
-    height: 50px;
+    height: 30px;
     margin: 0 0 10px;
     padding: 0 10px 11px;
     position: relative;
     text-position:center;
     text-decoration: none;
     text-shadow: 0 1px 1px rgba(255,255,255,.35);
-    width: 125px; }
+    width: 100px; }
 
 /**
  * Dribbble
@@ -986,7 +986,7 @@ a.twitter {
     color: white;
     text-align:center;
     font-size:15pt; 
-    padding-top:5px;
+    ;
     }
   
     
