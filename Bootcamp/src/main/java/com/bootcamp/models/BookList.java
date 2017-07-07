@@ -11,6 +11,10 @@ import javax.persistence.Table;
 public class BookList {
 	
 	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(name = "booklist_id")
+	private int id;
+	
 	@Column(name = "username")
 	private String username;
 	
@@ -75,6 +79,14 @@ public class BookList {
 
 	public void setReturn_date(int return_date) {
 		this.return_date = return_date;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	
