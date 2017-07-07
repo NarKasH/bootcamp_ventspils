@@ -3,6 +3,7 @@ package com.bootcamp.repositories;
 import java.beans.Transient;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.Query;
@@ -21,7 +22,7 @@ public interface BooksRepository extends CrudRepository<Books, Long>  {
 	int getCountofTheSameBooksByTitle(@Param("title")String title);
 	
 	@Query("select b from Books b where b.title like %:title% and b.author like %:author%" //Will return all books that match criteria (title,author,isbn,rating)
-			+ " and b.rating >= :rating and b.isbn like %:isbn%")
+			+ " and b.rating >= :rating and b.isbn like %:isbn% group by title")
 	List<Books> getBooksByInfo(@Param("title") String title,@Param("author") String author,
 			@Param("rating") Float rating, @Param("isbn") String isbn);
 	
@@ -30,5 +31,8 @@ public interface BooksRepository extends CrudRepository<Books, Long>  {
 	Books findFirstByTitleIgnoreCase(String title);
 	
 	List<Books> findByTitleOrAuthorOrIsbnIgnoreCaseOrRating(String title, String author, String isbn, float rating);
+
+	@Query("select b from Books b group by title")
+	List<Books> findAllUnique();
 	
 }

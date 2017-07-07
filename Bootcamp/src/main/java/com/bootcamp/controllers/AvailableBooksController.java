@@ -1,6 +1,7 @@
 package com.bootcamp.controllers;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.bootcamp.models.Books;
 import com.bootcamp.repositories.BooksRepository;
 
 @Controller
@@ -22,7 +24,8 @@ public class AvailableBooksController {
 	
 	@RequestMapping(value="/availableBooks", method = RequestMethod.GET)
 	public String givetakeBook(Model model){
-		model.addAttribute("books", bookRepository.findAll());
+		
+		model.addAttribute("books", bookRepository.findAllUnique());
 			
 		return "availableBooks";
 	}
