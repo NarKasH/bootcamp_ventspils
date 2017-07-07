@@ -39,7 +39,12 @@ public class SelectedBookController {
 		ModelAndView modelAndView = new ModelAndView();
 		Books book = bookrepository.findFirstByTitleIgnoreCase(title);
 		modelAndView.addObject("title", book.getTitle());
+		modelAndView.addObject("author", book.getAuthor());
+		modelAndView.addObject("year", book.getYear());
+		modelAndView.addObject("condition", book.getCondition());
+		modelAndView.addObject("rating", book.getRating());
 		modelAndView.addObject("pic_url", book.getPic_url());
+		modelAndView.addObject("isbn", book.getIsbn());
 		modelAndView.setViewName("selectedBook"); //demo or JAVA
 		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -52,15 +57,33 @@ public class SelectedBookController {
 	@RequestMapping(value={"/takebook"}, method = RequestMethod.GET)
 	public ModelAndView addBook(@RequestParam(value="title")String title){
 		
+		
+		ModelAndView modelAndView = new ModelAndView();
+		BookList bookList = new BookList();
+		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String username = auth.getName();
 		
 		System.out.println("title from title: " + title);
-		
-		//Users user = userRepository.findByUsername(username);
+
 		Books book = bookrepository.findFirstByTitleIgnoreCase(title);
 		
-		BookList bookList = new BookList();
+		int availableBookCount =  bookrepository.getCountofTheSameBooksByTitle(title);
+		int reservedBookCount = bookListRepository.getCountofReservedBooksByTitle(title);
+		
+		System.out.println("Reserved book count: " + reservedBookCount);
+		System.out.println("Available book count: " + availableBookCount);
+		
+		if(reservedBookCount < availableBookCount){
+			
+			modelAndView.addObject("availability", "order");
+			bookList.setBookStatus("ordered");
+			
+		}
+		else{
+			modelAndView.addObject("availability", "inque");
+			bookList.setBookStatus("que");
+		}
 		
 		bookList.setBookStatus("ordered");
 		bookList.setIsbn(book.getIsbn());
@@ -70,23 +93,8 @@ public class SelectedBookController {
 		
 		bookListRepository.save(bookList);
 		
-		ModelAndView modelAndView = new ModelAndView();
-		//modelAndView.addObject("book",bookrepository.findFirstByTitleIgnoreCase(title));
 		modelAndView.setViewName("redirect:/availableBooks"); //demo or JAVA
 		return modelAndView;
 	}
-	
-	
-	
-	/*@RequestMapping(value={"/selectedBook"}, method = RequestMethod.POST)
-	public ModelAndView SendRequest(){
-		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("book",book);
-		//model.addAttribute("author", author);
-		//model.addAttribute("year", year);
-		//model.addAttribute("isbn", isbn);
-		modelAndView.setViewName("test2");
-		return modelAndView;
-	}
-	*/
+
 }
