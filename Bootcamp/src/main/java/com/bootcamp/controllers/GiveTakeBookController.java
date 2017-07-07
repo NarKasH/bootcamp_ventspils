@@ -71,7 +71,7 @@ public class GiveTakeBookController {
 		}
 		
 		
-		bookListRepository.setBookstatusFor("take", isbn, username); //change book status to "owned"
+		bookListRepository.setBookstatusFor("owned", isbn, username); //change book status to "owned"
 		bookListRepository.setReturnDateFor((int)returnDate.getTime(), isbn, username); //set book return date
 	    System.out.println("Book has been given");
 
@@ -85,8 +85,8 @@ public class GiveTakeBookController {
 		//isbn = isbnAndUsername[0]; //get isbn
 		//String username = isbnAndUsername[1]; //get username
 	    System.out.println("Book has been taken");
-	    bookListRepository.setBookstatusFor("ordered", isbn, username); 
-		//bookListRepository.delete(bookListRepository.findByIsbnAndUsername(isbn, username)); //delete book from bookList
+	    //bookListRepository.setBookstatusFor("ordered", isbn, username); 
+		bookListRepository.delete(bookListRepository.findByIsbnAndUsername(isbn, username)); //delete book from bookList
 		
 	    ModelAndView mav = new ModelAndView("redirect:/givetakebook");
 	    mav.addObject("books", bookListRepository.findByBookStatusIgnoreCase("ordered"));
