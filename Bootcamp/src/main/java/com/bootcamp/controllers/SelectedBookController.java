@@ -39,6 +39,10 @@ public class SelectedBookController {
 		ModelAndView modelAndView = new ModelAndView();
 		Books book = bookrepository.findFirstByTitleIgnoreCase(title);
 		modelAndView.addObject("title", book.getTitle());
+		modelAndView.addObject("author", book.getAuthor());
+		modelAndView.addObject("year", book.getYear());
+		modelAndView.addObject("condition", book.getCondition());
+		modelAndView.addObject("rating", book.getRating());
 		modelAndView.addObject("pic_url", book.getPic_url());
 		modelAndView.setViewName("selectedBook"); //demo or JAVA
 		
@@ -82,7 +86,7 @@ public class SelectedBookController {
 		}
 		
 		bookList.setBookStatus("ordered");
-		bookList.setIsbn(book.getIsbn());
+		bookList.setIsbn("23123123");
 		bookList.setTitle(title);
 		bookList.setUsername(username);
 		bookList.setAuthor(book.getAuthor());
