@@ -39,7 +39,12 @@ public class SelectedBookController {
 		ModelAndView modelAndView = new ModelAndView();
 		Books book = bookrepository.findFirstByTitleIgnoreCase(title);
 		modelAndView.addObject("title", book.getTitle());
+		modelAndView.addObject("author", book.getAuthor());
+		modelAndView.addObject("year", book.getYear());
+		modelAndView.addObject("condition", book.getCondition());
+		modelAndView.addObject("rating", book.getRating());
 		modelAndView.addObject("pic_url", book.getPic_url());
+		modelAndView.addObject("isbn", book.getIsbn());
 		modelAndView.setViewName("selectedBook"); //demo or JAVA
 		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
