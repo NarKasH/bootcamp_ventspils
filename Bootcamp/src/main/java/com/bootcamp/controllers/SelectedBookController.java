@@ -60,8 +60,7 @@ public class SelectedBookController {
 		String username = auth.getName();
 		
 		System.out.println("title from title: " + title);
-		
-		//Users user = userRepository.findByUsername(username);
+
 		Books book = bookrepository.findFirstByTitleIgnoreCase(title);
 		
 		int availableBookCount =  bookrepository.getCountofTheSameBooksByTitle(title);
@@ -92,18 +91,5 @@ public class SelectedBookController {
 		modelAndView.setViewName("redirect:/availableBooks"); //demo or JAVA
 		return modelAndView;
 	}
-	
-	
-	
-	/*@RequestMapping(value={"/selectedBook"}, method = RequestMethod.POST)
-	public ModelAndView SendRequest(){
-		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("book",book);
-		//model.addAttribute("author", author);
-		//model.addAttribute("year", year);
-		//model.addAttribute("isbn", isbn);
-		modelAndView.setViewName("test2");
-		return modelAndView;
-	}
-	*/
+
 }
