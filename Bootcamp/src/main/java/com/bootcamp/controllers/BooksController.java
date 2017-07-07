@@ -18,7 +18,6 @@ import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.bootcamp.forms.BookAddForm;
 import com.bootcamp.models.Books;
 import com.bootcamp.repositories.BooksRepository;
 
@@ -42,19 +41,20 @@ public class BooksController extends WebMvcConfigurerAdapter {
 	 */
 
 	@GetMapping("/manage")
-	public String showForm(BookAddForm bookAddForm) {
+	public String showForm(@ModelAttribute("bookAddForm") Books bookAddForm,Model model) {
+		bookAddForm.setYear(0);
 		return "manage";
 	}
 
 	@PostMapping("/manage")
-	public String addBook(@Valid BookAddForm bookAddForm, BindingResult bindingResult,
+	public String addBook(@ModelAttribute("bookAddForm") @Valid Books bookAddForm, BindingResult bindingResult,
 			@RequestParam(value = "title", required = false) String title,
 			@RequestParam(value = "isbn", required = false) String isbn,
 			@RequestParam(value = "author", required = false) String author,
 			@RequestParam(value = "rating", required = false) Integer rating,
 			@RequestParam(value = "year", required = false) Integer year,
 			@RequestParam(value = "pic_url", required = false) String pic_url,Model model) {
-
+			
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("isSaved", false);
 			return "manage";

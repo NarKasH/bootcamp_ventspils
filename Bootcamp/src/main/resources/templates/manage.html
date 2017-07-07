@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 
 <head>
 
@@ -51,86 +52,99 @@
 </head>
 <body>
 
-    <div id="logout">
+	<div id="logout">
 
-   <a class="s3d twitter" th:href="@{/login}" href="login.html">LOGOUT</a>
-    <a  class="s3d twitter" th:href="@{/employeeIndex}" href="employeeIndex.html">HOME</a>
-    </div>
-<center>
-<h2 id="up">MANAGE YOUR BOOKS</h2>
-</center>
+		<a class="s3d twitter" th:href="@{/login}" href="login.html">LOGOUT</a>
+		<a class="s3d twitter" th:href="@{/employeeIndex}"
+			href="employeeIndex.html">HOME</a>
+	</div>
+	<center>
+		<h2 id="up">MANAGE YOUR BOOKS</h2>
+		<h2 id ="up" th:if="${isSaved}">SAVED</h2>
+	</center>
 
 
-<form id="form" method="get" th:action="@{/book/add}" >
-    <p style="margin-top:80px; margin-left:30%;" id="beforefields">TITLE</p>
-<input type="search" placeholder="TYPE TITLE HERE" name="title"/>
-<p id="beforefields" style="margin-left:30%;">AUTHOR</p>
-<input type="search" placeholder="TYPE AUTHOR HERE" name="author" />
-<p id="beforefields" style="margin-left:30%;">SELECT RATING</p>
-<select id="white" name="rating">
-  <option value="1">1 AND HIGHER</option>
-  <option value="2">2 AND HIGHER</option>
-  <option value="3">3 AND HIGHER</option>
-  <option value="4">4 AND HIGHER</option>
-  <option value="5">5 AND HIGHER</option>
-  <option value="6">6 AND HIGHER</option>
-  <option value="7">7 AND HIGHER</option>
-  <option value="8">8 AND HIGHER</option>
-  <option value="9">9 AND HIGHER</option>
-  <option value="10">10</option>
+	<form id="form" method="post" action="#" th:action="@{/book/manage}"
+		th:object="${bookAddForm}">
 
-</select>
+		<p style="margin-left:30%; margin-top:80px;" id="beforefields">TITLE</p>
+		<input type="search" th:field="*{title}" placeholder="TYPE TITLE HERE"
+			name="title" />
+		<p th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Title
+			Error</p>
 
-<p id="beforefields" style="margin-left:30%;">ISBN NUMBER</p>
-<input type="search" placeholder="TYPE ISBN NUMBER HERE" name="isbn" />
-<p id="beforefields" style="margin-left:30%;">YEAR</p>
-<input type="search" placeholder="TYPE ISBN NUMBER HERE" name="isbn" />
-<p id="beforefields" style="margin-left:30%;">COUNT</p>
-<input type="search" placeholder="TYPE ISBN NUMBER HERE" name="isbn" />
-<p id="beforefields" style="margin-left:30%;">PICTURE URL</p>
-<input type="search" placeholder="TYPE ISBN NUMBER HERE" name="isbn" />
+		<p style="margin-left:30%;" id="beforefields">AUTHOR</p>
+		<input type="search" th:field="*{author}"
+			placeholder="TYPE AUTHOR HERE" name="author" />
+		<p th:if="${#fields.hasErrors('author')}" th:errors="*{author}">AUTHOR
+			Error</p>
+			
+		<p style="margin-left:30%;" id="beforefields">SELECT RATING</p>
+		<select id="white" name="rating" th:field="*{rating}">
+		<option value="1">1 AND HIGHER</option>
+		<option value="2">2 AND HIGHER</option>
+		<option value="3">3 AND HIGHER</option>
+		<option value="4">4 AND HIGHER</option>
+		<option value="5">5 AND HIGHER</option>
+		<option value="6">6 AND HIGHER</option>
+		<option value="7">7 AND HIGHER</option>
+		<option value="8">8 AND HIGHER</option>
+		<option value="9">9 AND HIGHER</option>
+		<option value="10">10</option>
 
- <button title ="Fill in all spaces to add the book" type="submit" class="btn" style=" margin-top:40px;
-	padding: 5px;            
-	/* deleted string*/
-	border: none;  
-	background: grey;       
-    position:center;
-    width:40%;
-    min-width:200px;
-    margin-left:30%;
-    color:white;">
-    Add book
-    </button>
- <button title="Write ISBN number to remove your book" type="button" class="btn" style=" margin-top:40px;
-	padding: 5px;            
-	/* deleted string*/
-	border: none;  
-	background: grey;       
-    position:center;
-    width:40%;
-    min-width:200px;
-    margin-left:30%;
-    color:white;">
-    Remove book
-    </button>
-</form>
+		</select>
 
-    
-    <!-- jQuery -->
-    <script th:src="@{/vendor/jquery/jquery.min.js}" src="../static/vendor/jquery/jquery.min.js"></script>
+		<p style="margin-left:30%;" id="beforefields">ISBN NUMBER</p>
+		<input type="search" th:field="*{isbn}"
+			placeholder="TYPE ISBN NUMBER HERE" name="isbn" />
+		<p th:if="${#fields.hasErrors('isbn')}" th:errors="*{isbn}">ISBN
+			Error</p>
 
-    <!-- Bootstrap Core JavaScript -->
-    <script th:src="@{/vendor/bootstrap/js/bootstrap.min.js}" src="../static/vendor/bootstrap/js/bootstrap.min.js"></script>
+		<p style="margin-left:30%;" id="beforefields">YEAR</p>
+		<input type="search" th:field="*{year}"
+			placeholder="TYPE YEAR NUMBER HERE" name="year" />
+		<p th:if="${#fields.hasErrors('year')}" th:errors="*{year}">YEAR
+			Error</p>
 
-    <!-- Plugin JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
-    <script th:src="@{/vendor/scrollreveal/scrollreveal.min.js}" src="../static/vendor/scrollreveal/scrollreveal.min.js"></script>
-    <script th:src="@{/vendor/magnific-popup/jquery.magnific-popup.min.js}" src="../static/vendor/magnific-popup/jquery.magnific-popup.min.js"></script>
-    
+		<p style="margin-left:30%;" id="beforefields">PICTURE URL</p>
+		<input type="search" th:field="*{pic_url}"
+			placeholder="TYPE PICTURE URL NUMBER HERE" name="picUrl" />
+		<p th:if="${#fields.hasErrors('pic_url')}" th:errors="*{pic_url}">PicUrl
+			Error</p>
 
-    <!-- Theme JavaScript -->
-    <script th:src="@{/js/creative.min.js}" src="../static/js/creative.min.js"></script>
+		<button title="Fill in all spaces to add the book" type="submit"
+			class="btn"
+			style="margin-top: 40px; padding: 5px;
+	/* deleted string*/ border: none; background: grey; position: center; width: 40%; min-width: 200px; margin-left: 30%; color: white;">
+			Add book</button>
+		<button title="Write ISBN number to remove your book" type="button"
+			class="btn"
+			style="margin-top: 40px; padding: 5px;
+	/* deleted string*/ border: none; background: grey; position: center; width: 40%; min-width: 200px; margin-left: 30%; color: white;">
+			Remove book</button>
+	</form>
+
+
+	<!-- jQuery -->
+	<script th:src="@{/vendor/jquery/jquery.min.js}"
+		src="../static/vendor/jquery/jquery.min.js"></script>
+
+	<!-- Bootstrap Core JavaScript -->
+	<script th:src="@{/vendor/bootstrap/js/bootstrap.min.js}"
+		src="../static/vendor/bootstrap/js/bootstrap.min.js"></script>
+
+	<!-- Plugin JavaScript -->
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+	<script th:src="@{/vendor/scrollreveal/scrollreveal.min.js}"
+		src="../static/vendor/scrollreveal/scrollreveal.min.js"></script>
+	<script th:src="@{/vendor/magnific-popup/jquery.magnific-popup.min.js}"
+		src="../static/vendor/magnific-popup/jquery.magnific-popup.min.js"></script>
+
+
+	<!-- Theme JavaScript -->
+	<script th:src="@{/js/creative.min.js}"
+		src="../static/js/creative.min.js"></script>
 
 </body>
 
